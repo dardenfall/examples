@@ -1,0 +1,22 @@
+ME:
+Specific data structure?  no
+Find all? no then yes
+Multiple Siblings?
+
+BreadthSearchFor(X)
+
+algorithm:  // find one
+    foreach node, 
+        has(x)? return node
+            foreach node.siblings
+                BreadthSearchFor(sibling);
+            foreach node.children
+                BreadthSearchFor(child);
+
+algorithm:  // find all
+    foreach node,
+        has(x)? results.push(node)
+            foreach node.siblings
+                BreadthSearchFor(sibling)
+            foreach node.children
+                BreadthSearchFor(child)
