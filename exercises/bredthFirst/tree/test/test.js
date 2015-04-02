@@ -42,7 +42,7 @@ describe('BTree', function(){
     }).should.not.throw();
   });
 
-  describe('#right', function(){
+  describe('#root', function(){
     var t = new BTree.BTree(1);
 
     it('root should work', function(){
@@ -68,7 +68,7 @@ describe('BTree', function(){
     }).should.not.throw();
   });
 
-  describe('#deeper tree tests', function(){
+  describe('#deep', function(){
     var i = 1;
     var t = new BTree.BTree(1);
 
@@ -86,8 +86,7 @@ describe('BTree', function(){
     }).should.not.throw();
   });
 
-  describe('#depth tree test', function(){
-    var i = 1;
+  describe('#depth1', function(){
     var t = new BTree.BTree(1);
 
     it('depth test', function(){
@@ -95,8 +94,53 @@ describe('BTree', function(){
       t.newRight(3);
       t.traverseNewLeft(4);
       t.traverseNewLeft(5);
-      if(t.depth() !== 3){throw Error()}
+      console.log("depth", t.depth());
+      if(t.depth() !== 4){throw Error()}
     }).should.not.throw();
   });
+
+  describe('#depth2', function(){
+    var t = new BTree.BTree(1);
+
+    it('depth test', function(){
+      t.traverseNewLeft(2);
+      t.newRight(3);
+      t.traverseNewLeft(4);
+      t.traverseNewLeft(5);
+      if(t.depth() !== 4){throw Error()}
+    }).should.not.throw();
+  });
+
+  describe('#bredth first search', function(){
+    var t = new BTree.BTree(1);
+
+    it('should not find value', function(){
+      t.traverseNewRight(2);
+      t.traverseNewRight(3);
+      var searchResult = t.search({val:20, method:"width"}); 
+      if(searchResult.found){throw Error()}
+
+    }).should.not.throw();
+  });
+
+  describe('#bredth first search2', function(){
+    var t = new BTree.BTree(1);
+
+    it('depth test', function(){
+      t.traverseNewRight(20);
+      t.traverseNewRight(4);
+      t.up();
+      t.up();
+      t.traverseNewLeft(2);
+      t.newRight(3);
+      t.traverseNewLeft(4);
+      t.traverseNewLeft(20);
+      var searchResult = t.search({val:20, method:"width", returnNodesSearched:true}); 
+      console.log("search-wide should only take 3 operations", t.depth());
+      if(!searchResult.found){throw Error()}
+      if(searchResult.returnNodesSearched !== 3){throw Error()}
+    }).should.not.throw();
+  });
+
 })
 
