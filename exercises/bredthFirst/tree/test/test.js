@@ -1,4 +1,4 @@
-//to run > cd /Users/ascavone/Dropbox/projects/interviewPrep/prep/exercises/bredthFirst/tree
+//to run > cd /Users/ascavone/Dropbox/projects/interviewPrep/prep/exercises/breadthFirst/tree
 // > mocha --reporter progress
 // currently 3 passing, 1 failing
 
@@ -111,22 +111,33 @@ describe('BTree', function(){
     }).should.not.throw();
   });
 
-  describe('#bredth first search', function(){
+  describe('#is leaf', function(){
+    var t = new BTree.BTree(1);
+
+    it('leaf should work', function(){
+      if(!t.isLeaf()){throw Error()}
+      t.traverseNewRight(2);
+      if(!t.isLeaf()){throw Error()}
+      t.up();
+      if(t.isLeaf()){throw Error()}    
+    }).should.not.throw(); 
+  });
+
+  describe('#breadth first search', function(){
     var t = new BTree.BTree(1);
 
     it('should not find value', function(){
       t.traverseNewRight(2);
       t.traverseNewRight(3);
-      var searchResult = t.search({val:20, method:"width"}); 
+      var searchResult = t.search({val:20, method:"breadth"}); 
       if(searchResult.found){throw Error()}
 
     }).should.not.throw();
   });
-
-  describe('#bredth first search2', function(){
+  describe('#breadth first search2', function(){
     var t = new BTree.BTree(1);
 
-    it('depth test', function(){
+    it('breadth test', function(){
       t.traverseNewRight(20);
       t.traverseNewRight(4);
       t.up();
@@ -135,10 +146,10 @@ describe('BTree', function(){
       t.newRight(3);
       t.traverseNewLeft(4);
       t.traverseNewLeft(20);
-      var searchResult = t.search({val:20, method:"width", returnNodesSearched:true}); 
-      console.log("search-wide should only take 3 operations", t.depth());
+      var searchResult = t.search({val:20, method:"breadth", returnNodesSearched:true}); 
+      console.log("search-wide should only take 3 operations");
       if(!searchResult.found){throw Error()}
-      if(searchResult.returnNodesSearched !== 3){throw Error()}
+      if(searchResult.nodesSearched !== 3){throw Error()}
     }).should.not.throw();
   });
 

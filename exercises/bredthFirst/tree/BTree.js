@@ -90,6 +90,10 @@
         return this.current.val;
     }
 
+    BTree.prototype.isLeaf = function(){
+        return this.current.left === null && this.current.right === null;
+    }
+
     BTree.prototype.depth = function(){
 
         var nodePointer = this.root;
@@ -115,14 +119,18 @@
 
     // search - searches tree to find passed value.  Takes argument object 'arg'
     //   arg.val - value to search for
-    //   arg.method - width(default) || depth - type of search
+    //   arg.method - breadth(default) || depth - type of search
     //   arg.returnNodesSearched - true || false (default) - testing option, returns number of nodes searched
     // returns result
     //   result.found - true if val is found
     //   result.nodesSearched - number of nodes searched if 'returnNodesSearched' === true
     BTree.prototype.search = function(args){
-        var val = args.val || throw Error('must pass search value'));
-        var method = args.method || 'width';
+        
+        if(typeof args.val === 'undefined'){
+            throw Error('must pass search value');
+        }
+        var passedVal = args.val;
+        var method = args.method || 'breadth';
         var returnNodesSearched = args.returnNodesSearched || false;
 
         var nodePointer = this.root;
@@ -131,20 +139,52 @@
         var nodesSearched = 0;
         var result = {found:false};
 
-        var widthSearch = function(nodePointer, val){
+        var depthSearch = function(nodePointer, val){
             nodesSearched++;
-            if(nodePointer.left.val === val || nodePointer.right.val === val){
+            if(nodePointer.val === val){
                 return true;
             }
             else{
-                return nodePointer.left ? widthSearch(nodePointer.left, val) : false || 
-                       nodePointer.right ? widthSearch(nodePointer.right, val) : false;
+                return nodePointer.left ? depthSearch(nodePointer.left, val) : false || 
+                       nodePointer.right ? depthSearch(nodePointer.right, val) : false;
             }
         }
 
-        result.found = widthSearch(nodePointer, val);
+        var breadthSearch = function(nodePointer, val){
+            var tempNode = nodePointer;
+            var queue = [tempNode];
 
+            while(queue.length !== 0){
+                nodesSearched++;
+                tempNode = queue.pop(); 
+    
+                if(tempNode.val === val){
+                    return true;
+                }
+                
+                if(tempNode.left != null){
+                    queue.unshift(tempNode.left);
+                }
+                if(tempNode.right != null){
+                    queue.unshift(tempNode.right);
+                }
+            }
 
+            return false;    
+        }
+
+        if(method === 'breadth'){
+            result.found = breadthSearch(nodePointer, passedVal);
+        }
+        else{
+            result.found = depthSearch(nodePointer, passedVal);            
+        }
+
+        if(returnNodesSearched){
+            result.nodesSearched = nodesSearched;
+        }
+        console.log("-------",result)
+        return result;
     }
 
 })(this);
