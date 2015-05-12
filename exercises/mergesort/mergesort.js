@@ -1,49 +1,76 @@
-
+var calls = 0;
 var toBeSorted = [8,5,6,1,4,2,3];
-var result = [1,2,3,4,5,6,8];
+var gold = [1,2,3,4,5,6,8];
 
-function test()
+function test(result)
 {
-    for (var i = 0; i < toBeSorted.length; i++) {
-        if(toBeSorted[i] !== result[i]){
-            return "" + toBeSorted[i] + " not equal to " + result[i];
+    console.log("----------->" + result)
+    for (var i = 0; i < result.length; i++) {
+        if(result[i] !== gold[i]){
+            return "" + result[i] + " not equal to " + gold[i];
         }
     };
 
     return "works!";
 }
 
-function mergeSort(splitTarget1, splitTarget2){
-    debug(splitTarget1);
-    debug(splitTarget2);
-    
-    if(splitTarget1.length === 0){
-        return splitTarget2;
-    } 
-    else if(splitTarget2.length === 0){
-        return splitTarget1;
+function mergeSort(array, tabs){
+    var string = "",
+        left = [],
+        right = [];
+
+    for (var i = 0; i < tabs; i++) {
+        string += "/t";
+    };
+    console.log(string + array);
+
+    if(array.length > 1){
+        var left = mergeSort(array.slice(0, array.length/2), tabs++);
+        var right = mergeSort(array.slice(array.length/2, array.length), tabs++);
+        return merge (left, right);
     }
-    else if(splitTarget1.length === 1){
-        var retval = [],
-        tar1 = splitTarget1[0],
-        tar2 = splitTarget2[0];
-        if(tar1 > tar2){
-            return [tar1,tar2];
-        }
-        else{
-            return [tar2,tar1];  
-        } 
+    else{
+        return array;
     }
-    else return mergeSort(splitTarget1.slice(0, splitTarget1.length/2),
-        splitTarget2.slice(splitTarget2.length/2, splitTarget2.length));
 }
 
-debug(toBeSorted);
-debug(result);
+function merge(left, right){
+    
+
+    if(!left || left.length === 0){
+        return right;
+    } 
+    else if(!right || right.length === 0){
+        return left;
+    }
+    else {
+        var result = [];
+
+        while(left.length || right.length){
+            var leftVal = null, rightVal = null;
+            if(left.length){
+                leftVal = left[0];
+            }
+            if(right.length){
+                rightVal = right[0];
+            }
+
+            if(rightVal === null || left[0] < right[0]){
+                result.push(left.shift());
+            }
+            else{
+                result.push(right.shift())
+            }
+        }
+
+        return result;
+    }
+
+}
+
 
 (function(){
     debug(toBeSorted);
-    mergeSort(toBeSorted.slice(0, toBeSorted.length/2),
-        toBeSorted.slice(toBeSorted.length/2, toBeSorted.length)); 
-    debug(test());
+    var result = mergeSort(toBeSorted, 0); 
+    console.log(test(result));
 })();
