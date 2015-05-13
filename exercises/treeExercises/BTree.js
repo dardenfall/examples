@@ -183,8 +183,19 @@
         if(returnNodesSearched){
             result.nodesSearched = nodesSearched;
         }
-        console.log("-------",result)
         return result;
+    },
+
+    BTree.prototype.print = function(){
+        
+        var printHelper = function(depth){
+
+            
+        }
+    },
+
+    BTree.prototype.isMirror = function(args){
+        return false;
     }
 
 })(this);

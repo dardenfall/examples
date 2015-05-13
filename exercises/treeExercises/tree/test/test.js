@@ -4,12 +4,12 @@
 
 var assert = require("assert");
 var should = require("should");
-var BTree = require("../BTree.js");
+var BTree = require("../../BTree.js");
 describe('BTree', function(){
 
   describe('#require', function(){
     ('require should not throw an exception', function(){
-      BTree = require("../BTree.js");
+      BTree = require("../../BTree.js");
     }).should.not.throw();
   });
 
@@ -134,6 +134,7 @@ describe('BTree', function(){
 
     }).should.not.throw();
   });
+
   describe('#breadth first search2', function(){
     var t = new BTree.BTree(1);
 
@@ -150,7 +151,20 @@ describe('BTree', function(){
       console.log("search-wide should only take 3 operations");
       if(!searchResult.found){throw Error()}
       if(searchResult.nodesSearched !== 3){throw Error()}
+      searchResult = t.search({val:4, method:"breadth", returnNodesSearched:true});
+      console.log(searchResult)
+      if(!searchResult.found){throw Error()}
+      if(searchResult.nodesSearched !== 2){throw Error()}      
     }).should.not.throw();
+  });
+
+  describe('#isMirror', function(){
+    var t = new BTree.BTree(1);
+    var t2 = new BTree.BTree(1);
+
+    it('root check', function(){
+      if(!t.isMirror(t2)){throw Error()}
+    }).should.not.throw()
   });
 
 })
