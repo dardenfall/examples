@@ -90,7 +90,10 @@
         return this.current.val;
     }
 
-    BTree.prototype.isLeaf = function(){
+    BTree.prototype.isLeaf = function(node){
+        if(typeof node === 'undefined'){
+            
+        }
         return this.current.left === null && this.current.right === null;
     }
 
@@ -187,10 +190,37 @@
     },
 
     BTree.prototype.print = function(){
-        
-        var printHelper = function(depth){
 
-            
+        var nodePointer = this.root;
+        
+            // spaces between nodes
+            /*depth 1 = 0
+              depth 2 = 11 6
+              depth 3 = 5  2
+              depth 4 = 3   
+ 
+              start at 3 spaces, each level up is 
+                         a
+                    /         \ 
+                   x           x       --11 spaces between 
+                 /   \       /   \ 
+                1     2     1     2    -- 5 spaces between nodes
+               / \   / \   / \   / \
+              2   3 5   6 2   3 5   6  -- 3 spaces between nodes
+
+              ugg - I can't figure out that algorithm.  So lets try this:
+              a
+              xx
+              1234
+              12345678
+
+            */
+
+        var printResults = function(results){
+
+            if(nodePointer.isLeaf)
+            if(isLeaf)
+
         }
     },
 
